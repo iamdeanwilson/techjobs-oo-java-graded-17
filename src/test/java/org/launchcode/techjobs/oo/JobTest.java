@@ -2,6 +2,7 @@ package org.launchcode.techjobs.oo;
 
 import org.junit.jupiter.api.Test;
 
+import static java.lang.System.lineSeparator;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JobTest {
@@ -43,5 +44,31 @@ public class JobTest {
         assertNotEquals(test_job_1.getId(), test_job_2.getId());
     }
 
+    @Test()
+    public void testToStringStartsAndEndsWithNewLine() {
+        Job test_job = new Job();
+        String firstLine = String.valueOf(test_job.toString().charAt(test_job.toString().length() - 1));
+        String lastLine = String.valueOf(test_job.toString().charAt(0));
+        assertEquals(firstLine, lineSeparator());
+        assertEquals(lastLine, lineSeparator());
+    }
+
+    @Test()
+    public void testToStringContainsCorrectLabelsAndData() {
+        Job test_job = new Job("testName", new Employer("testEmployer"), new Location("testLocation"),
+                new PositionType("testPositionType"), new CoreCompetency("testCoreCompetency"));
+        assertEquals(String.format("%1$sID: %2$d%1$sName: %3$s%1$sEmployer: %4$s%1$s" +
+                        "Location: %5$s%1$sPosition Type: %6$s%1$sCore Competency: %7$s%1$s",
+                lineSeparator(), test_job.getId(), "testName", "testEmployer", "testLocation",
+                "testPositionType", "testCoreCompetency"), test_job.toString());
+    }
+
+    @Test()
+    public void testToStringHandlesEmptyField() {
+        Job test_job = new Job();
+        assertEquals(String.format("%1$sID: %2$s%1$sName: %3$s%1$sEmployer: %3$s%1$s" +
+                        "Location: %3$s%1$sPosition Type: %3$s%1$sCore Competency: %3$s%1$s",
+                lineSeparator(), test_job.getId(), "Data not available"), test_job.toString());
+    }
 
 }
